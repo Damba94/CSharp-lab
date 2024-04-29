@@ -1,0 +1,5 @@
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.csproj.AssemblyReference.cache
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\MainWindow.g.cs
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\App.g.cs
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital_MarkupCompile.cache
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital_MarkupCompile.lref
