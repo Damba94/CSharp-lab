@@ -1,73 +1,101 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Windows;
 
-public class DodajPacijentaViewModel : BaseViewModel
+namespace YourNamespace
 {
-    private readonly HttpClient _httpClient;
-
-    private string _oib;
-    private string _mbo;
-    private string _imePrezime;
-    private DateTime _datumRodjenja;
-    private Gender _spol;
-    private string _dijagnoza;
-    private ICommand _dodajPacijentaCommand;
-
-    public DodajPacijentaViewModel()
+    public enum Gender
     {
-        _httpClient = new HttpClient();
-        _httpClient.BaseAddress = new Uri("https://localhost:5001/api/"); 
-
+        Male,
+        Female,
+        Other
     }
 
-    public string OIB
+    public enum InsuranceStatus
     {
-        get { return _oib; }
-        set
-        {
-            _oib = value;
-            OnPropertyChanged(nameof(OIB));
-        }
+        Insured,
+        Uninsured
     }
 
-    // Dodajte svojstva za ostale informacije o pacijentu...
-
-    public ICommand DodajPacijentaCommand
+    public class PatientViewModel
     {
-        get
-        {
-            return _dodajPacijentaCommand ?? (_dodajPacijentaCommand = new RelayCommand(async param => await DodajPacijentaAsync()));
-        }
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public DateTime DateOfBirth { get; set; }
     }
 
-    private async Task DodajPacijentaAsync()
+    // Glavna klasa za WPF prozor
+    public partial class MainWindow : Window
     {
-        var createPatientDto = new Hospital.CreatePatientDto
+        private readonly HttpClient httpClient = new HttpClient();
+        private readonly string apiUrl = "https://localhost:7215/api/Patient";
+
+        private readonly BindingList<PatientViewModel> patients = new BindingList<PatientViewModel>();
+
+        public MainWindow()
         {
-            OIB = OIB,
-            MBO = MBO,
-            
-        };
+            InitializeComponent();
+            DataContext = this;
 
-        var json = JsonConvert.SerializeObject(createPatientDto);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+            // Povezivanje liste pacijenata s DataGrid kontrolom
+            PatientsDataGrid.ItemsSource = patients;
 
-        try
-        {
-            var response = await _httpClient.PostAsync("Pacijent", content);
-            response.EnsureSuccessStatusCode(); // Ovo će baciti izuzetak ako je status odgovora neuspešan
 
-            // Opciono: prikažite korisniku poruku o uspešnom dodavanju pacijenta
+            GetPatients();
         }
-        catch (HttpRequestException ex)
+
+        // Metoda za dohvaćanje podataka o pacijentima putem REST API-ja
+        private async Task GetPatients()
         {
-            // Ovde možete rukovati greškama koje se dogode prilikom slanja zahteva
-            // Na primer, možete prikazati poruku korisniku ili logovati grešku
-            // MessageBox.Show($"Greška prilikom slanja zahteva: {ex.Message}");
+            try
+            {
+                httpClient.Timeout = TimeSpan.FromSeconds(5);
+
+                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    List<GetAllPatientsResult> apiResponse = await response.Content.ReadAsAsync<List<GetAllPatientsResult>>();
+
+                    foreach (var patient in apiResponse)
+                    {
+                        patients.Add(new PatientViewModel
+                        {
+                            Id = patient.Id,
+                            FullName = patient.FullName,
+                            DateOfBirth = patient.DateOfBirth
+                        });
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error fetching patients data: " + response.ReasonPhrase);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred: " + ex.Message);
+            }
+        }
+
+
+
+        private void AddPatientButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Ovdje bi se otvorio pop-up prozor za unos novog pacijenta
+            // Primjerice, mogao bi se koristiti MessageBox za jednostavnost
+            MessageBox.Show("Placeholder for adding new patient popup form.");
+        }
+
+ 
+        public class GetAllPatientsResult
+        {
+            public int Id { get; set; }
+            public string FullName { get; set; }
+            public DateTime DateOfBirth { get; set; }
         }
     }
 }
