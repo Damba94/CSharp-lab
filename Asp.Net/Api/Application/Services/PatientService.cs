@@ -3,6 +3,7 @@ using Application.Enums;
 using Application.Interfaces;
 using Data.Context;
 using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
@@ -32,11 +33,27 @@ namespace Application.Services
                 DiagnosisCode = createPatientDto.DiagnosisCode,
                 AdmissionDate = DateTime.Now,
                 InsuranceStatus = createPatientDto.InsuranceStatus,
+                IsDischarged=false,
             };
 
             _hospitalDbContext.Patients.Add(patient);
             await _hospitalDbContext.SaveChangesAsync();
             return CreatePatientStatus.Created;
+        }
+
+        public async Task<(GetAllPatientsStatus status,List<GetAllPatientResult>? Value)> GetAll()
+        {
+            var patients = await _hospitalDbContext.Patients
+                .AsNoTracking()
+                .Select(p=> new GetAllPatientResult
+                {
+                    ID = p.Id,
+                    DateOfBirth=p.DateOfBirth,
+                    FullName=p.FullName,
+
+                })
+                .ToListAsync();
+            return (GetAllPatientsStatus.Success, patients);    
         }
     }
 }

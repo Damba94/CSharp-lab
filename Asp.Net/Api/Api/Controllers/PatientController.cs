@@ -1,5 +1,6 @@
 using Api.Dtos;
 using Application.Enums;
+using Application.Interfaces;
 using Application.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,9 @@ namespace Api.Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-        private readonly PatientService _patientService;
+        private readonly IPatientService _patientService;
 
-        public PatientController(PatientService patientService)
+        public PatientController(IPatientService patientService)
         {
             _patientService = patientService;
         }
@@ -22,9 +23,21 @@ namespace Api.Controllers
         {
             var status = await _patientService
                 .CreatPatient(createPatientRequest.ToApplicationDto());
-            if (status is CreatePatientStatus.Created)
+            if (status is CreatePatientStatus.NotCreated)
                 return BadRequest();
             return Ok(status);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<GetAllPatientsResponse>>> GettAll ()
+        {
+            var (status, value) = await _patientService
+                .GetAll();
+
+            if(status is not GetAllPatientsStatus.Success)
+                return BadRequest();
+            return Ok(value.Select(
+                patient => patient.ToDto()).ToList());
         }
 
     }
