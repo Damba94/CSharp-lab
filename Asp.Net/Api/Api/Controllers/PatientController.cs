@@ -36,9 +36,25 @@ namespace Api.Controllers
 
             if(status is not GetAllPatientsStatus.Success)
                 return BadRequest();
+
             return Ok(value.Select(
                 patient => patient.ToDto()).ToList());
         }
 
+        [HttpGet("{patientId}")]
+        public async Task<ActionResult<GetAllPatientsResponse>> GetPatient (int patientId)
+        {
+            var mappedRequest = new GetPatientRequest()
+                .ToApplicationDto(patientId);
+
+            var (status, value) = await _patientService
+                .GetPatient(mappedRequest);
+
+            if (status is not GetAllPatientsStatus.Success)
+                return BadRequest();
+
+            return Ok(value.ToDto());
+
+        }
     }
 }

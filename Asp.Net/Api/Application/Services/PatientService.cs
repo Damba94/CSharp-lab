@@ -55,5 +55,26 @@ namespace Application.Services
                 .ToListAsync();
             return (GetAllPatientsStatus.Success, patients);    
         }
+
+        public async Task<(GetAllPatientsStatus status,GetPatientResult? Value)> GetPatient(GetPatientDto getPatientDto)
+        {
+            var patient = await _hospitalDbContext.Patients
+                .AsNoTracking()
+                .Where(p => p.Id == getPatientDto.Id)
+                .Select(patient => new GetPatientResult
+                {
+                    Id = patient.Id,
+                    DateOfBirth = patient.DateOfBirth,
+                    FullName = patient.FullName,
+                    OIB = patient.OIB,
+                    MBO = patient.MBO,
+                    Gender = patient.Gender,
+                    DiagnosisCode = patient.DiagnosisCode,
+                    AdmissionDate = patient.AdmissionDate,
+                    IsDischarged = patient.IsDischarged,
+                })
+                .FirstOrDefaultAsync();
+            return (GetAllPatientsStatus.Success, patient);
+        }
     }
 }

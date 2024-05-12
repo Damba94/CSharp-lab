@@ -12,5 +12,6 @@ namespace Application.Interfaces
     {
         Task<CreatePatientStatus> CreatPatient(CreatePatientDto createPatientDto);
         Task<(GetAllPatientsStatus status, List<GetAllPatientResult>? Value)> GetAll();
+        Task<(GetAllPatientsStatus status, GetPatientResult? Value)> GetPatient(GetPatientDto getPatientDto);
     }
 }
