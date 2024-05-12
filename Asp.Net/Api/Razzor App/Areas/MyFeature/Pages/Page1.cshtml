@@ -1,0 +1,36 @@
+﻿@page
+@model Razzor_App.MyFeature.Pages.Page1Model
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Page1</title>
+</head>
+<body>
+    <h1>List of Patients</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Diagnosis</th>
+                <!-- Dodajte ostale potrebne zaglavlja kolona -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model.Patients)
+            {
+                <tr>
+                    <td>@patient.Name</td>
+                    <td>@patient.Gender</td>
+                    <td>@patient.Diagnosis</td>
+                    <!-- Dodajte ostale potrebne kolone -->
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
