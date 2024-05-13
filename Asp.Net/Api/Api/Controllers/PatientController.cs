@@ -2,6 +2,7 @@ using Api.Dtos;
 using Application.Enums;
 using Application.Interfaces;
 using Application.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,19 +13,28 @@ namespace Api.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IPatientService _patientService;
+        private readonly IValidator<CreatePatientRequest> _createPatientRequestValidator;
 
-        public PatientController(IPatientService patientService)
+        public PatientController(
+            IPatientService patientService,
+            IValidator<CreatePatientRequest> createPatientValidator)
         {
             _patientService = patientService;
+            _createPatientRequestValidator = createPatientValidator;
         }
 
         [HttpPost]
         public async Task<ActionResult> Create([FromBody]CreatePatientRequest createPatientRequest)
         {
+            await _createPatientRequestValidator
+                .ValidateAndThrowAsync(createPatientRequest);
+
             var status = await _patientService
                 .CreatPatient(createPatientRequest.ToApplicationDto());
+
             if (status is CreatePatientStatus.NotCreated)
                 return BadRequest();
+
             return Ok(status);
         }
 

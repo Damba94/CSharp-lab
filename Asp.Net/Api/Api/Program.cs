@@ -1,9 +1,14 @@
+using Api.Dtos;
+using Api.Validators;
 using Application.Interfaces;
 using Application.Services;
 using Data.Context;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IValidator<CreatePatientRequest>, CreatPatientValidator>();
 
 // Add services to the container.
 builder.Services.AddScoped<IPatientService, PatientService>();
