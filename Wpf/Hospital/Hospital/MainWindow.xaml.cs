@@ -27,7 +27,7 @@ namespace YourNamespace
         public DateTime DateOfBirth { get; set; }
     }
 
-    // Glavna klasa za WPF prozor
+
     public partial class MainWindow : Window
     {
         private readonly HttpClient httpClient = new HttpClient();
@@ -40,14 +40,25 @@ namespace YourNamespace
             InitializeComponent();
             DataContext = this;
 
-            // Povezivanje liste pacijenata s DataGrid kontrolom
+            
             PatientsDataGrid.ItemsSource = patients;
 
-
-            GetPatients();
+            
+             LoadPatientsAsync();
         }
 
-        // Metoda za dohvaćanje podataka o pacijentima putem REST API-ja
+        private async void LoadPatientsAsync()
+        {
+            try
+            {
+                await GetPatients();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while loading patients: " + ex.Message);
+            }
+        }
+   
         private async Task GetPatients()
         {
             try
@@ -85,8 +96,7 @@ namespace YourNamespace
 
         private void AddPatientButton_Click(object sender, RoutedEventArgs e)
         {
-            // Ovdje bi se otvorio pop-up prozor za unos novog pacijenta
-            // Primjerice, mogao bi se koristiti MessageBox za jednostavnost
+            
             MessageBox.Show("Placeholder for adding new patient popup form.");
         }
 

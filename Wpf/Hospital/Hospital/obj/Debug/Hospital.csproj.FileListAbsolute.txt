@@ -30,3 +30,8 @@ C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\bin\Debug\System.Thre
 C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.csproj.CopyComplete
 C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.exe
 C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.pdb
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\bin\Debug\Hospital.exe.manifest
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\bin\Debug\Hospital.application
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.TrustInfo.xml
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.exe.manifest
+C:\Users\tinod\Desktop\Github\C# lab\Wpf\Hospital\Hospital\obj\Debug\Hospital.application
