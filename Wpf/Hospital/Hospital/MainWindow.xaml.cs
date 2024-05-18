@@ -40,11 +40,11 @@ namespace YourNamespace
             InitializeComponent();
             DataContext = this;
 
-            
+
             PatientsDataGrid.ItemsSource = patients;
 
-            
-             LoadPatientsAsync();
+
+            LoadPatientsAsync();
         }
 
         private async void LoadPatientsAsync()
@@ -58,49 +58,55 @@ namespace YourNamespace
                 MessageBox.Show("An error occurred while loading patients: " + ex.Message);
             }
         }
-   
+
         private async Task GetPatients()
         {
+
             try
             {
-                httpClient.Timeout = TimeSpan.FromSeconds(5);
-
-                HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
-
-                if (response.IsSuccessStatusCode)
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    List<GetAllPatientsResult> apiResponse = await response.Content.ReadAsAsync<List<GetAllPatientsResult>>();
+                    httpClient.Timeout = TimeSpan.FromSeconds(5);
 
-                    foreach (var patient in apiResponse)
+                    HttpResponseMessage response = await httpClient.GetAsync(apiUrl);
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        patients.Add(new PatientViewModel
+                        List<GetAllPatientsResult> apiResponse = await response.Content.ReadAsAsync<List<GetAllPatientsResult>>();
+
+                        foreach (var patient in apiResponse)
                         {
-                            Id = patient.Id,
-                            FullName = patient.FullName,
-                            DateOfBirth = patient.DateOfBirth
-                        });
+                            patients.Add(new PatientViewModel
+                            {
+                                Id = patient.Id,
+                                FullName = patient.FullName,
+                                DateOfBirth = patient.DateOfBirth
+                            });
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error fetching patients data: " + response.ReasonPhrase);
                     }
                 }
-                else
-                {
-                    MessageBox.Show("Error fetching patients data: " + response.ReasonPhrase);
-                }
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("An error occurred: " + ex.Message);
             }
+
         }
 
 
 
         private void AddPatientButton_Click(object sender, RoutedEventArgs e)
         {
-            
+
             MessageBox.Show("Placeholder for adding new patient popup form.");
         }
 
- 
+
         public class GetAllPatientsResult
         {
             public int Id { get; set; }

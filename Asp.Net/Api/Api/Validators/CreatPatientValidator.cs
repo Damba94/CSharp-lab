@@ -8,7 +8,7 @@ namespace Api.Validators
         public CreatPatientValidator()
         {
             RuleFor(x => x.OIB)
-                .Length(13)
+                .Length(11)
                 .NotEmpty()
                 .NotNull();
 
