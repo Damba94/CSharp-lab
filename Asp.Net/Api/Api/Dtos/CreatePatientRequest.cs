@@ -21,4 +21,4 @@ namespace Api.Dtos
     {
         public static partial CreatePatientDto ToApplicationDto(this CreatePatientRequest request);
     }
-}   
+}

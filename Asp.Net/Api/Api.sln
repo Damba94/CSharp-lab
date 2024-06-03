@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{6699A8CC-67FF-46E6-B7F8-8DA188DF89D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razzor App", "Razzor App\Razzor App.csproj", "{97DEB394-26D2-4E93-AB59-2F646D0BF17F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{6699A8CC-67FF-46E6-B7F8-8DA188DF89D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6699A8CC-67FF-46E6-B7F8-8DA188DF89D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6699A8CC-67FF-46E6-B7F8-8DA188DF89D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97DEB394-26D2-4E93-AB59-2F646D0BF17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97DEB394-26D2-4E93-AB59-2F646D0BF17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97DEB394-26D2-4E93-AB59-2F646D0BF17F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97DEB394-26D2-4E93-AB59-2F646D0BF17F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

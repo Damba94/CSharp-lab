@@ -4,16 +4,10 @@ using Application.Interfaces;
 using Data.Context;
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class PatientService:IPatientService
+    public class PatientService : IPatientService
     {
         private readonly HospitalDbContext _hospitalDbContext;
         public PatientService(HospitalDbContext hospitalDbContext)
@@ -33,7 +27,7 @@ namespace Application.Services
                 DiagnosisCode = createPatientDto.DiagnosisCode,
                 AdmissionDate = DateTime.Now,
                 InsuranceStatus = createPatientDto.InsuranceStatus,
-                IsDischarged=false,
+                IsDischarged = false,
             };
 
             _hospitalDbContext.Patients.Add(patient);
@@ -41,22 +35,22 @@ namespace Application.Services
             return CreatePatientStatus.Created;
         }
 
-        public async Task<(GetAllPatientsStatus status,List<GetAllPatientResult>? Value)> GetAll()
+        public async Task<(GetAllPatientsStatus status, List<GetAllPatientResult>? Value)> GetAll()
         {
             var patients = await _hospitalDbContext.Patients
                 .AsNoTracking()
-                .Select(p=> new GetAllPatientResult
+                .Select(p => new GetAllPatientResult
                 {
                     ID = p.Id,
-                    DateOfBirth=p.DateOfBirth,
-                    FullName=p.FullName,
+                    DateOfBirth = p.DateOfBirth,
+                    FullName = p.FullName,
 
                 })
                 .ToListAsync();
-            return (GetAllPatientsStatus.Success, patients);    
+            return (GetAllPatientsStatus.Success, patients);
         }
 
-        public async Task<(GetAllPatientsStatus status,GetPatientResult? Value)> GetPatient(GetPatientDto getPatientDto)
+        public async Task<(GetAllPatientsStatus status, GetPatientResult? Value)> GetPatient(GetPatientDto getPatientDto)
         {
             var patient = await _hospitalDbContext.Patients
                 .AsNoTracking()
@@ -76,5 +70,60 @@ namespace Application.Services
                 .FirstOrDefaultAsync();
             return (GetAllPatientsStatus.Success, patient);
         }
+
+        public async Task<(GetAllPatientsStatus status, GetPatientResult? value)> GetPatientByOib(GetPatientByOibDto getPatientByOibDto)
+        {
+            var patient = await _hospitalDbContext.Patients
+                .AsNoTracking()
+                .Where(p => p.OIB == getPatientByOibDto.Oib)
+                .Select(patient => new GetPatientResult
+                {
+                    Id = patient.Id,
+                    DateOfBirth = patient.DateOfBirth,
+                    FullName = patient.FullName,
+                    OIB = patient.OIB,
+                    MBO = patient.MBO,
+                    Gender = patient.Gender,
+                    DiagnosisCode = patient.DiagnosisCode,
+                    AdmissionDate = patient.AdmissionDate,
+                    IsDischarged = patient.IsDischarged,
+                })
+                .FirstOrDefaultAsync();
+
+            return (GetAllPatientsStatus.Success, patient);
+        }
+
+        public async Task<(GetAllPatientsStatus status, List<GetAllPatientResult>? value)> GetAllSorted(bool sortByAdmissionDate = false)
+        {
+            var patients = await _hospitalDbContext.Patients
+                .AsNoTracking()
+                .OrderBy(p => p.AdmissionDate)
+                .Select(p => new GetAllPatientResult
+                {
+                    ID = p.Id,
+                    DateOfBirth = p.DateOfBirth,
+                    FullName = p.FullName,
+                })
+                .ToListAsync();
+
+            return (GetAllPatientsStatus.Success, patients);
+        }
+
+        public async Task<(GetAllPatientsStatus status, List<GetAllPatientResult>? value)> Filter(bool filterByNotDischarged = false)
+        {
+            var patients = await _hospitalDbContext.Patients
+            .AsNoTracking()
+            .OrderBy(p => !p.IsDischarged)
+            .Select(p => new GetAllPatientResult
+            {
+                ID = p.Id,
+                DateOfBirth = p.DateOfBirth,
+                FullName = p.FullName,
+            })
+             .ToListAsync();
+            return (GetAllPatientsStatus.Success, patients);
+        }
+
     }
 }
+

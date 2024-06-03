@@ -1,15 +1,10 @@
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Data.Configurations
 {
-    public class PatientConfiguration:IEntityTypeConfiguration<Patient>
+    public class PatientConfiguration : IEntityTypeConfiguration<Patient>
     {
         public void Configure(EntityTypeBuilder<Patient> builder)
         {
@@ -28,7 +23,7 @@ namespace Data.Configurations
 
             builder.Property(x => x.FullName)
                 .IsRequired()
-                .HasMaxLength(100); 
+                .HasMaxLength(100);
 
             builder.Property(x => x.DateOfBirth)
                 .IsRequired();
@@ -38,7 +33,7 @@ namespace Data.Configurations
 
             builder.Property(x => x.DiagnosisCode)
                 .IsRequired()
-                .HasMaxLength(5); 
+                .HasMaxLength(5);
 
             builder.Property(x => x.AdmissionDate)
                 .IsRequired();

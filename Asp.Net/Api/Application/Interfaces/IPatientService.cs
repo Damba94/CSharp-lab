@@ -1,10 +1,5 @@
 using Application.Dtos;
 using Application.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
@@ -12,6 +7,8 @@ namespace Application.Interfaces
     {
         Task<CreatePatientStatus> CreatPatient(CreatePatientDto createPatientDto);
         Task<(GetAllPatientsStatus status, List<GetAllPatientResult>? Value)> GetAll();
+        Task<(GetAllPatientsStatus status, List<GetAllPatientResult>? value)> GetAllSorted(bool sortByAdmissionDate = false);
         Task<(GetAllPatientsStatus status, GetPatientResult? Value)> GetPatient(GetPatientDto getPatientDto);
+        Task<(GetAllPatientsStatus status, GetPatientResult? value)> GetPatientByOib(GetPatientByOibDto getPatientByOibDto);
     }
 }
